@@ -387,3 +387,43 @@ class Crew(BaseModel):
 
     def __repr__(self):
         return f"Crew(id={self.id}, process={self.process}, number_of_agents={len(self.agents)}, number_of_tasks={len(self.tasks)})"
+
+    def share_beliefs(self, source_agent: Agent, target_agent: Agent):
+        # Retrieve beliefs from the source agent's knowledge base
+          beliefs = source_agent.knowledge_base.get_beliefs()
+
+        # Integrate the beliefs into the target agent's knowledge base
+          target_agent.knowledge_base.update_beliefs(beliefs)
+
+    def align_goals(self):
+        # Retrieve goals from all agents in the crew
+        goals = [agent.goals for agent in self.agents]
+
+        # Perform goal alignment using the ontology and reasoning
+        aligned_goals = self.ontology.align_goals(goals)
+
+        # Update the agents' goals based on the alignment
+        for agent, aligned_goal in zip(self.agents, aligned_goals):
+            agent.update_goals(aligned_goal)
+
+    def coordinate_plans(self):
+        # Retrieve plans from all agents in the crew
+        plans = [agent.plans for agent in self.agents]
+
+        # Perform plan coordination using the ontology and reasoning
+        coordinated_plans = self.ontology.coordinate_plans(plans)
+
+        # Update the agents' plans based on the coordination
+        for agent, coordinated_plan in zip(self.agents, coordinated_plans):
+            agent.update_plans(coordinated_plan)
+
+    def integrate_knowledge(self):
+        # Retrieve knowledge from all agents in the crew
+        knowledge = [agent.knowledge_base.get_knowledge() for agent in self.agents]
+
+        # Integrate the knowledge using the ontology and reasoning
+        integrated_knowledge = self.ontology.integrate_knowledge(knowledge)
+
+        # Update the agents' knowledge bases with the integrated knowledge
+        for agent in self.agents:
+            agent.knowledge_base.update_knowledge(integrated_knowledge)
