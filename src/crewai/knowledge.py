@@ -47,10 +47,9 @@ class Intentions:
         self.onboarding_steps: List[str] = []
 
 class KnowledgeManagementAgent(Agent):
-    def __init__(self, ontology_path: str, **kwargs):
-        super().__init__(**kwargs)
-        self.ontology = get_ontology(ontology_path).load()
-        self.knowledge_graph = nx.MultiDiGraph()
+    def __init__(self, ontology, knowledge_graph):
+        self.ontology = ontology
+        self.knowledge_graph = knowledge_graph
         self.model = None
         self.partition = None
         self.clustering = None
